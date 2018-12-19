@@ -27,13 +27,21 @@ namespace ConsoleApp9
                         {
                             case 1:
                                 NormalLevelStage_1 n1 = new NormalLevelStage_1();
-                                Action.LevelCreator(n1, MyArmy, EnemyArmy, level);
+                                Action.LevelCreator(n1, MyArmy, EnemyArmy, 1);
+                                MyArmy = new List<IAtack>();
                                 NormalLevelStage_2 n2 = new NormalLevelStage_2();
-                                Action.LevelCreator(n2, MyArmy, EnemyArmy, level);
+                                Action.LevelCreator(n2, MyArmy, EnemyArmy, 2);
+                                Console.ReadKey();
+                                Console.Clear();
                                 break;
                             case 2:
-                                HardLevelStage_1 HardLevelStage_1 = new HardLevelStage_1();
-                                EnemyArmy = HardLevelStage_1.CreateEnemyArmy();
+                                HardLevelStage_1 h1 = new HardLevelStage_1();
+                                Action.LevelCreator(h1, MyArmy, EnemyArmy, 1);
+                                MyArmy = new List<IAtack>();
+                                HardLevelStage_2 h2 = new HardLevelStage_2();
+                                Action.LevelCreator(h2, MyArmy, EnemyArmy, 2);
+                                Console.ReadKey();
+                                Console.Clear();
                                 break;
                             default:
                                 break;

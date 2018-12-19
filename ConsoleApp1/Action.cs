@@ -9,11 +9,11 @@ namespace ConsoleApp9
 {
     class Action
     {
-        public static void CreateMyArmy(List<IAtack> MyArmy, int level)
+        public static void CreateMyArmy(List<IAtack> MyArmy, int stage)
         {
         panAgain:
             Console.Write("Enter number of Panzer  : ");
-            if (!int.TryParse(Console.ReadLine(), out int pan) || pan > level || pan < 0)
+            if (!int.TryParse(Console.ReadLine(), out int pan) || pan > stage || pan < 0)
             {
                 Console.WriteLine("Enter Correct number\nYour panzer should be in the same quantity(or less) with enemy due to stage of level");
                 goto panAgain;
@@ -24,7 +24,7 @@ namespace ConsoleApp9
             }
         copAgain:
             Console.Write("Enter number of Copper  : ");
-            if (!int.TryParse(Console.ReadLine(), out int cop) || cop > level || cop < 0)
+            if (!int.TryParse(Console.ReadLine(), out int cop) || cop > stage || cop < 0)
             {
                 Console.WriteLine("Enter Correct number\nYour copper should be in the same quantity(or less) with enemy due to stage of level");
                 goto copAgain;
@@ -35,7 +35,7 @@ namespace ConsoleApp9
             }
         solAgain:
             Console.Write("Enter number of Soldier : ");
-            if (!int.TryParse(Console.ReadLine(), out int sol) || sol > level || sol < 0)
+            if (!int.TryParse(Console.ReadLine(), out int sol) || sol > stage || sol < 0)
             {
                 Console.WriteLine("Enter Correct number\nYour soldier should be in the same quantity(or less) with enemy due to stage of level");
                 goto solAgain;
@@ -48,20 +48,20 @@ namespace ConsoleApp9
             Thread.Sleep(2000);
             Console.Clear();
         }
-        public static void LevelCreator(LevelBase levelBase, List<IAtack> MyArmy, List<IAtack> EnemyArmy, int level)
+        public static void LevelCreator(LevelBase levelBase, List<IAtack> MyArmy, List<IAtack> EnemyArmy, int stage)
         {
-            LevelBase normalLevelStage_1 = levelBase;
-            EnemyArmy = normalLevelStage_1.CreateEnemyArmy();
-            CreateMyArmy(MyArmy, level);
+            LevelBase level = levelBase;
+            EnemyArmy = level.CreateEnemyArmy();
+            CreateMyArmy(MyArmy, stage);
             while (true)
             {
                 foreach (var MyUnit in MyArmy)
                 {
                     foreach (var EnemyUnit in EnemyArmy)
                     {
-                        if (EnemyUnit.Life() != 0)
+                        if (EnemyUnit.Life != 0)
                         {
-                            Console.WriteLine($"My {MyUnit.Name()} atacked to enemy {EnemyUnit.Name()}. Enemy {EnemyUnit.Name()}'s life is {EnemyUnit.Life()}");
+                            Console.WriteLine($"My {MyUnit.Name()} atacked to enemy {EnemyUnit.Name()}. Enemy {EnemyUnit.Name()}'s life is {EnemyUnit.Life}");
                             MyUnit.Atack(EnemyUnit);
                         }
                     }
@@ -70,25 +70,32 @@ namespace ConsoleApp9
                 {
                     foreach (var MyUnit in MyArmy)
                     {
-                        if (MyUnit.Life() != 0)
+                        if (MyUnit.Life != 0)
                         {
-                            Console.WriteLine($"My {EnemyUnit.Name()} atacked to {MyUnit.Name()}. My {MyUnit.Name()}'s life is {MyUnit.Life()}");
+                            Console.WriteLine($"My {EnemyUnit.Name()} atacked to {MyUnit.Name()}. My {MyUnit.Name()}'s life is {MyUnit.Life}");
                             EnemyUnit.Atack(MyUnit);
                         }
                     }
                 }
-                bool chck = false;
+                int chck = 0;
                 foreach (var MyUnit in MyArmy)
                 {
-                    if (MyUnit.Life() != 0) chck = true;
+                    if (MyUnit.Life == 0) chck++;
                 }
-                if (chck == false) break;
+                if (chck == 3)
+                {
+                    Console.WriteLine("Enemy army win");
+                    break;
+                }
                 foreach (var EnemyUnit in EnemyArmy)
                 {
-                    if (EnemyUnit.Life() != 0) chck = true;
+                    if (EnemyUnit.Life == 0) chck++;
                 }
-                if (chck == false) break;
-                Console.ReadKey();
+                if (chck == 3)
+                {
+                    Console.WriteLine("My army win");
+                    break;
+                }
             }
         }
     }

@@ -6,69 +6,105 @@ namespace ConsoleApp9
     {
         void Atack(IAtack atack);
         string Name();
-        int Life();
+        int Life { get; set; }
     }
-
-    abstract class Base : IAtack
+    
+    class Panzer : IAtack
     {
-        protected Random random = new Random();
-        public int life = 100;
-        public void Atack(IAtack atack) {}
+        Random random = new Random();
+        private int life;
 
-        public string Name() { return null; }
+        public Panzer() => life = 100;
+        int IAtack.Life
+        {
+            get
+            {
+                return life;
+            }
+            set
+            {
+                life = value;
+                if (value < 0) life = 0;
+            }
+        }
 
-        int IAtack.Life() { return 0; }
-    }
-
-    class Panzer : Base
-    {
         public string Name()
         {
             return "Panzer";
         }
-        int Life() { return life; }
-        public void Atack(Base atacked) {  atacked.life -= random.Next(10, 15); }
+        public void Atack(IAtack atacked) { atacked.Life -= random.Next(5, 10); }
     }
 
-    class Copper : Base
+    class Copper : IAtack
     {
+        Random random = new Random();
+        private int life;
+
+        public Copper() => life = 100;
+        int IAtack.Life {
+            get
+            {
+                return life;
+            }
+            set
+            {
+                life = value;
+                if (value < 0) life = 0;
+            }
+        }
+
         public string Name()
         {
-            return "Panzer";
-        }
-        int Life() { return life; }
-        public void Atack(Base atacked)  { atacked.life -= random.Next(5, 10); }
+            return "Copper";
+        } 
+        public void Atack(IAtack atacked)  { atacked.Life -= random.Next(5, 10); } 
     }
 
-    class Soldier : Base
+    class Soldier : IAtack
     {
+        Random random = new Random();
+        private int life;
+
+        public Soldier() => life = 100;
+        int IAtack.Life
+        {
+            get
+            {
+                return life;
+            }
+            set
+            {
+                life = value;
+                if (value < 0) life = 0;
+            }
+        }
+
         public string Name()
         {
-            return "Panzer";
+            return "Soldier";
         }
-        int Life() { return life; }
-        public void Atack(Base atacked) { atacked.life -= random.Next(1, 5); }
+        public void Atack(IAtack atacked) { atacked.Life -= random.Next(5, 10); }
     }
 
     //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     interface IAtackerFactoryInterface
     {
-        Base CreateAtacker();
+        IAtack CreateAtacker();
     }
 
     class PanzerFactory : IAtackerFactoryInterface
     {
-        public Base CreateAtacker() { return new Panzer(); }
+        public IAtack CreateAtacker() { return new Panzer(); }
     }
 
     class CopperFactory : IAtackerFactoryInterface
     {
-        public Base CreateAtacker() { return new Copper(); }
+        public IAtack CreateAtacker() { return new Copper(); }
     }
 
     class SoldierFactory : IAtackerFactoryInterface
     {
-        public Base CreateAtacker() { return new Soldier(); }
+        public IAtack CreateAtacker() { return new Soldier(); }
     }
 }
